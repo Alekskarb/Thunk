@@ -5,7 +5,7 @@ class AddNewItemForm extends React.Component {
     state = {
         error: false,
         title: ""
-    }
+    };
 
     onAddItemClick = () => {
         let newText = this.state.title;
@@ -18,21 +18,20 @@ class AddNewItemForm extends React.Component {
             // передаём новый текст наружу
             this.props.addItem(newText);
         }
-    }
+    };
 
     onTitleChanged = (e) => {
         this.setState({
             error: false,
             title: e.currentTarget.value
         });
-    }
+    };
 
     onKeyPress = (e) => {
         if (e.key === "Enter") {
             this.onAddItemClick();
         }
-    }
-
+    };
 
     render = () => {
         let classNameForInput = this.state.error ? "error" : "";

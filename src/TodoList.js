@@ -16,25 +16,18 @@ class TodoList extends React.Component {
     constructor(props) {
         super(props);
         this.newTasksTitileRef = React.createRef();
-    }
+    };
+
+    state = {
+        filterValue: "All"
+    };
 
     componentDidMount() {
         this.restoreState();
     }
 
-    saveState = () => {
-        // переводим объект в строку
-        let stateAsString = JSON.stringify(this.state);
-        // сохраняем нашу строку в localStorage под ключом "our-state"
-        localStorage.setItem("our-state-" + this.props.id, stateAsString);
-    };
-
     restoreState = () => {
         this.props.getTasks(this.props.id)
-    };
-
-    state = {
-        filterValue: "All"
     };
 
     addTask = (newText) => {
@@ -119,8 +112,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(thunk)
         },
         deleteTask: (taskId, todolistId) => {
-            const action = deleteTaskTC(taskId, todolistId);
-            dispatch(action)
+            dispatch(deleteTaskTC(taskId, todolistId))
         },
         updateTask(taskId, obj, todolistId) {
             const thunk = updateTaskTC(taskId, obj, todolistId);

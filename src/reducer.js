@@ -1,31 +1,17 @@
 import {api} from "./api";
 
-export const ADD_TODOLIST = "TodoList/Reducer/ADD-TODOLIST";
+export const ADD_TODOLIST = "App/Reducer/ADD-TODOLIST";
 export const DELETE_TODOLIST = "TodoList/Reducer/DELETE-TODOLIST";
 export const DELETE_TASK = "TodoList/Reducer/DELETE-TASK";
 export const UPDATE_TODOLIST_TITLE = "TodoList/Reducer/UPDATE_TODOLIST_TITLE";
 export const ADD_TASK = "TodoList/Reducer/ADD-TASK";
 export const SET_TASKS = "TodoList/Reducer/SET_TASKS";
 export const UPDATE_TASK = "TodoList/Reducer/UPDATE-TASK";
-export const SET_TODOLISTS = "TodoList/Reducer/SET_TODOLISTS";
+export const SET_TODOLISTS = "App/Reducer/SET_TODOLISTS";
 
 const initialState = {
-    "todolists": [
-        // {
-        //     "id": 0, "title": "every day",
-        //     tasks: [
-        //         {"title": "css11", "isDone": false, "priority": "low", "id": 0},
-        //         {"title": "js", "isDone": false, "priority": "low", "id": 1},
-        //         {"title": "react", "isDone": false, "priority": "low", "id": 2},
-        //         {"title": "sasasa", "isDone": false, "priority": "low", "id": 3},
-        //         {"title": "yoaa", "isDone": false, "priority": "low", "id": 4},
-        //         {"title": "sddsdsds", "isDone": false, "priority": "low", "id": 5}]
-        // },
-        // {"id": 1, "title": "tomorrow", tasks: []},
-        // {"id": 2, "title": "weewwe`", tasks: []},
-        // {"id": 3, "title": "dddd", tasks: []}
-    ]
-}
+    "todolists": []
+};
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -126,7 +112,7 @@ export const getTodolistsTC = () => (dispatch, getState) => {
     api.getTodolists().then(res => {
         dispatch(setTodolistsAC(res.data))
     })
-}
+};
 export const getTasksTC = (todolistId) => (dispatch, getState) => {
     api.getTasks(todolistId)
         .then(res => {
@@ -145,19 +131,19 @@ export const deleteTodolistTC = (todolistId) => (dispatch, getState) => {
         .then(res => {
             dispatch(deleteTodolistAC(todolistId));
         })
-}
+};
 export const addTodolistTC = (title) => (dispatch, getState) => {
     api.createTodolist(title).then(res => {
         let todolist = res.data.data.item;
         dispatch(addTodolistAC(todolist))
     })
-}
+};
 export const deleteTaskTC = (taskId, todolistId) => (dispatch, getState) => {
     api.deleteTask(taskId)
         .then(res => {
             dispatch(deleteTaskAC(taskId, todolistId));
         });
-}
+};
 export const updateTaskTC = (taskId, obj, todolistId) => (dispatch, getState) => {
     getState().todolists.find(td => td.id === todolistId)
         .tasks.forEach(t => {
@@ -168,7 +154,7 @@ export const updateTaskTC = (taskId, obj, todolistId) => (dispatch, getState) =>
                 });
         }
     })
-}
+};
 
 export const updateTodolistTitleTC = (title, todolistId) => (dispatch, getState) => {
     api.updateTodolistTitle(title, todolistId)
