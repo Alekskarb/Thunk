@@ -135,26 +135,12 @@ export const updateTodolistTitleAC = (title, todolistId) => {
         todolistId,
         title
     };
-}
-export const addTodolistAC = (newTodolist) => {
-    return {
-        type: ADD_TODOLIST,
-        newTodolist: newTodolist
-    }
-};
+} ;
 
-const addTaskAC = (newTask, todolistId) => {
-    return {type: ADD_TASK, newTask, todolistId};
-}
-const setTasksAC = (tasks, todolistId) => {
-    return {type: SET_TASKS, tasks, todolistId};
-}
-const setTodolistsAC = (todolists) => {
-    return {
-        type: SET_TODOLISTS,
-        todolists: todolists
-    }
-}
+const addTodolistAC = (newTodolist) => ({type: ADD_TODOLIST, newTodolist: newTodolist});
+const addTaskAC = (newTask, todolistId) => ({type: ADD_TASK, newTask, todolistId});
+const setTasksAC = (tasks, todolistId) => ({type: SET_TASKS, tasks, todolistId});
+const setTodolistsAC = (todolists) => ({type: SET_TODOLISTS, todolists: todolists});
 
 export const getTodolistsTC = () => (dispatch, getState) => {
     api.getTodolists().then(res => {
@@ -193,8 +179,8 @@ export const deleteTaskTC = (taskId, todolistId) => (dispatch, getState) => {
         });
 }
 export const updateTaskTC = (taskId, obj, todolistId) => (dispatch, getState) => {
-    getState().todolists.find(td=> td.id === todolistId)
-    .tasks.forEach(t => {
+    getState().todolists.find(td => td.id === todolistId)
+        .tasks.forEach(t => {
         if (t.id === taskId) {
             api.updateTask({...t, ...obj})
                 .then(res => {
@@ -204,10 +190,10 @@ export const updateTaskTC = (taskId, obj, todolistId) => (dispatch, getState) =>
     })
 }
 
-export const updateTodolistTitleTC = (title, todolistId)=> (dispatch, getState)=> {
+export const updateTodolistTitleTC = (title, todolistId) => (dispatch, getState) => {
     api.updateTodolistTitle(title, todolistId)
         .then(res => {
-            dispatch(updateTodolistTitleAC(title,todolistId));
+            dispatch(updateTodolistTitleAC(title, todolistId));
         });
 }
 

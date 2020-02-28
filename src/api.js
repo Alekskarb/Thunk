@@ -17,7 +17,7 @@ export const api = {
         return instance.get("");
     },
     updateTask(task) {
-        return instance.put(`/tasks`,  task);
+        return instance.put(`/tasks`, task);
     },
     deleteTodolist(id) {
         return instance.delete("/" + id)
