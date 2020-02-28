@@ -39,13 +39,13 @@ const reducer = (state = initialState, action) => {
         case DELETE_TODOLIST:
             return {
                 ...state,
-                todolists: state.todolists.filter(tl => tl.id != action.todolistId)
+                todolists: state.todolists.filter(tl => tl.id !== action.todolistId)
             }
         case UPDATE_TODOLIST_TITLE:
             return {
                 ...state,
                 todolists: state.todolists.map(tl => {
-                    if (tl.id != action.todolistId) return tl;
+                    if (tl.id !== action.todolistId) return tl;
                     else return {...tl, title: action.title}
                 })
             }
@@ -56,7 +56,7 @@ const reducer = (state = initialState, action) => {
                     if (tl.id === action.todolistId) {
                         return {
                             ...tl,
-                            tasks: tl.tasks.filter(t => t.id != action.taskId)
+                            tasks: tl.tasks.filter(t => t.id !== action.taskId)
                         }
                     } else {
                         return tl

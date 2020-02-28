@@ -10,13 +10,7 @@ import {
     updateTaskTC, updateTodolistTitleTC
 } from "./reducer";
 
-
 class TodoList extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.newTasksTitileRef = React.createRef();
-    };
 
     state = {
         filterValue: "All"
@@ -49,14 +43,13 @@ class TodoList extends React.Component {
     changeStatus = (taskId, status) => {
         this.changeTask(taskId, {status: status});
     };
-
     changeTitle = (taskId, title) => {
         this.changeTask(taskId, {title: title});
     };
 
     deleteTodolist = () => {
         this.props.deleteTodolist(this.props.id)
-    }
+    };
 
     deleteTask = (taskId) => {
         this.props.deleteTask(taskId, this.props.id)
@@ -103,20 +96,17 @@ const mapDispatchToProps = (dispatch) => {
         getTasks(tasks, todolistId) {
             dispatch(getTasksTC(tasks, todolistId));
         },
-        createTask: (newText, todolistId) => {
-            const thunk = createTaskTC(newText, todolistId);
-            dispatch(thunk)
+        addTask: (newText, todolistId) => {
+            dispatch(createTaskTC(newText, todolistId));
         },
         deleteTodolist: (todolistId) => {
-            const thunk = deleteTodolistTC(todolistId);
-            dispatch(thunk)
+            dispatch(deleteTodolistTC(todolistId));
         },
         deleteTask: (taskId, todolistId) => {
             dispatch(deleteTaskTC(taskId, todolistId))
         },
         updateTask(taskId, obj, todolistId) {
-            const thunk = updateTaskTC(taskId, obj, todolistId);
-            dispatch(thunk);
+            dispatch(updateTaskTC(taskId, obj, todolistId));
         },
         updateTodolistTitle: (title, todolistId) => {
             dispatch(updateTodolistTitleTC(title, todolistId));
