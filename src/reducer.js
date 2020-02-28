@@ -1,5 +1,4 @@
 import {api} from "./api";
-import {default} from "react-redux/lib/utils/Subscription";
 
 export const ADD_TODOLIST = "App/Reducer/ADD-TODOLIST";
 export const DELETE_TODOLIST = "TodoList/Reducer/DELETE-TODOLIST";
@@ -95,7 +94,8 @@ const reducer = (state = initialState, action) => {
                     }
                 })
             };
-            default: return state;
+        default:
+            return state;
     }
 };
 
@@ -142,21 +142,19 @@ export const addTodolistTC = (title) => (dispatch, getState) => {
     })
 };
 export const deleteTaskTC = (taskId, todolistId) => (dispatch, getState) => {
-    api.deleteTask(taskId)
+    api.deleteTask(todolistId, taskId)
         .then(res => {
             dispatch(deleteTaskAC(taskId, todolistId));
         });
 };
-export const updateTaskTC = (taskId, obj, todolistId) => (dispatch, getState) => {
-    getState().todolists.find(td => td.id === todolistId)
-        .tasks.forEach(t => {
-        if (t.id === taskId) {
-            api.updateTask({...t, ...obj})
-                .then(res => {
-                    dispatch(updateTaskAC(taskId, obj, todolistId));
-                });
-        }
-    })
+export const updateTaskTC = (taskId, todolistId, task, obj) => (dispatch) => {
+    // getState().todolists.find(td => td.id === todolistId)
+    //     .tasks.forEach(t => {
+    //     if (t.id === taskId) {
+    api.updateTask(taskId, todolistId, task)
+        .then(res => {
+            dispatch(updateTaskAC(taskId, obj, todolistId));
+        });
 };
 
 export const updateTodolistTitleTC = (title, todolistId) => (dispatch, getState) => {

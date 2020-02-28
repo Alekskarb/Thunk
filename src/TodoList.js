@@ -25,7 +25,7 @@ class TodoList extends React.Component {
     };
 
     addTask = (newText) => {
-        this.props.createTask(newText, this.props.id)
+        this.props.addTask(newText, this.props.id)
     };
 
     changeFilter = (newFilterValue) => {
@@ -37,10 +37,11 @@ class TodoList extends React.Component {
     };
 
     changeTask = (taskId, obj) => {
-
-
-
-        this.props.updateTask(taskId, obj)
+        let changedTask = this.props.tasks.find(task => {   //see destruction expression stroke #67
+            return task.id === taskId
+        });
+        let task = {...changedTask, ...obj};
+        this.props.updateTask(taskId, this.props.id, task, obj);
     };
 
     changeStatus = (taskId, status) => {
@@ -63,7 +64,7 @@ class TodoList extends React.Component {
     };
 
     render = () => {
-        let {tasks = []} = this.props;
+        let {tasks = []} = this.props;  //see changeTask stroke #40
         return (
             <div className="todoList">
                 <div className="todoList-header">
@@ -108,8 +109,8 @@ const mapDispatchToProps = (dispatch) => {
         deleteTask: (taskId, todolistId) => {
             dispatch(deleteTaskTC(taskId, todolistId))
         },
-        updateTask(taskId, obj, todolistId) {
-            dispatch(updateTaskTC(taskId, obj, todolistId));
+        updateTask(taskId, todolistId, task, obj) {
+            dispatch(updateTaskTC(taskId, todolistId, task, obj));
         },
         updateTodolistTitle: (title, todolistId) => {
             dispatch(updateTodolistTitleTC(title, todolistId));
