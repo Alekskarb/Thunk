@@ -27,11 +27,11 @@ class TodoList extends React.Component {
         let stateAsString = JSON.stringify(this.state);
         // сохраняем нашу строку в localStorage под ключом "our-state"
         localStorage.setItem("our-state-" + this.props.id, stateAsString);
-    }
+    };
 
     restoreState = () => {
         this.props.getTasks(this.props.id)
-    }
+    };
 
     state = {
         filterValue: "All"
@@ -39,7 +39,7 @@ class TodoList extends React.Component {
 
     addTask = (newText) => {
         this.props.createTask(newText, this.props.id)
-    }
+    };
 
     changeFilter = (newFilterValue) => {
         this.setState({
@@ -47,30 +47,31 @@ class TodoList extends React.Component {
         }, () => {
             this.saveState();
         });
-    }
+    };
 
     changeTask = (taskId, obj) => {
         this.props.updateTask(taskId, obj)
-    }
+    };
 
     changeStatus = (taskId, status) => {
         this.changeTask(taskId, {status: status});
-    }
+    };
 
     changeTitle = (taskId, title) => {
         this.changeTask(taskId, {title: title});
-    }
+    };
 
     deleteTodolist = () => {
-        this.props.deleteTodolist(this.props.id)}
+        this.props.deleteTodolist(this.props.id)
+    }
 
     deleteTask = (taskId) => {
-       this.props.deleteTask(taskId, this.props.id)
-    }
+        this.props.deleteTask(taskId, this.props.id)
+    };
 
     updateTitle = (title) => {
-       this.props.updateTodolistTitle(title, this.props.id)
-    }
+        this.props.updateTodolistTitle(title, this.props.id)
+    };
 
     render = () => {
         let {tasks = []} = this.props;
@@ -130,7 +131,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(action)
         },
     }
-}
+};
 
 const ConnectedTodolist = connect(null, mapDispatchToProps)(TodoList);
 
