@@ -98,7 +98,7 @@ const reducer = (state = initialState, action) => {
     console.log("reducer: ", action);
     return state;
 };
-
+// Action creators
 const updateTaskAC = (taskId, obj, todolistId) => ({type: UPDATE_TASK, taskId, obj, todolistId});
 const deleteTodolistAC = (todolistId) => ({type: DELETE_TODOLIST, todolistId: todolistId});
 const deleteTaskAC = (taskId, todolistId) => ({type: DELETE_TASK, todolistId, taskId});
@@ -107,8 +107,9 @@ const addTodolistAC = (newTodolist) => ({type: ADD_TODOLIST, newTodolist: newTod
 const addTaskAC = (newTask, todolistId) => ({type: ADD_TASK, newTask, todolistId});
 const setTasksAC = (tasks, todolistId) => ({type: SET_TASKS, tasks, todolistId});
 const setTodolistsAC = (todolists) => ({type: SET_TODOLISTS, todolists: todolists});
-
+// Thunk creators
 export const getTodolistsTC = () => (dispatch, getState) => {
+//to API, dispatch action
     api.getTodolists().then(res => {
         dispatch(setTodolistsAC(res.data))
     })
@@ -116,17 +117,17 @@ export const getTodolistsTC = () => (dispatch, getState) => {
 export const getTasksTC = (todolistId) => (dispatch, getState) => {
     api.getTasks(todolistId)
         .then(res => {
-            let allTasks = res.data.items;  // items - это таски сервака
+            let allTasks = res.data.items;
             dispatch(setTasksAC(allTasks, todolistId));
         });
 };
-export const createTaskTC = (newText, todolistId) => (dispatch, getState) => {
+export const createTaskTC = (newText, todolistId) => (dispatch) => {
     api.createTask(newText, todolistId).then(res => {
         let newTask = res.data.data.item;
         dispatch(addTaskAC(newTask, todolistId));
     });
 };
-export const deleteTodolistTC = (todolistId) => (dispatch, getState) => {
+export const deleteTodolistTC = (todolistId) => (dispatch) => {
     api.deleteTodolist(todolistId)
         .then(res => {
             dispatch(deleteTodolistAC(todolistId));
