@@ -119,15 +119,12 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(thunk);
         },
         updateTodolistTitle: (title, todolistId) => {
-            const action = updateTodolistTitleTC(title, todolistId);
-            dispatch(action)
+            dispatch(updateTodolistTitleTC(title, todolistId));
         },
     }
 };
 
-const ConnectedTodolist = connect(null, mapDispatchToProps)(TodoList);
-
-export default ConnectedTodolist;
+export default connect(null, mapDispatchToProps)(TodoList);
 
 
 
