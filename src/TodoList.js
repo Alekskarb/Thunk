@@ -6,11 +6,9 @@ import TodoListTitle from "./TodoListTitle";
 import AddNewItemForm from "./AddNewItemForm";
 import {connect} from "react-redux";
 import {
-    addTaskAC, createTaskTC, deleteTaskAC, deleteTodolistAC, deleteTodolistTC, getTasksTC,
-    setTasksAC, updateTaskAC, updateTodolistTitleAC
-
+    createTaskTC, deleteTaskTC, deleteTodolistTC, getTasksTC,
+    updateTaskTC, updateTodolistTitleTC
 } from "./reducer";
-import {api} from "./api";
 
 
 class TodoList extends React.Component {
@@ -35,7 +33,6 @@ class TodoList extends React.Component {
         this.props.getTasks(this.props.id)
     }
 
-
     state = {
         filterValue: "All"
     };
@@ -53,15 +50,7 @@ class TodoList extends React.Component {
     }
 
     changeTask = (taskId, obj) => {
-
-        this.props.tasks.forEach(t => {
-            if (t.id === taskId) {
-                api.updateTask({...t, ...obj})
-                    .then(res => {
-                        this.props.updateTask(taskId, obj, this.props.id);
-                    });
-            }
-        })
+        this.props.updateTask(taskId, obj)
     }
 
     changeStatus = (taskId, status) => {
@@ -73,26 +62,14 @@ class TodoList extends React.Component {
     }
 
     deleteTodolist = () => {
-        this.props.deleteTodolist(this.props.id)
-        // api.deleteTodolist(this.props.id)
-        //     .then(res => {
-        //         this.props.deleteTodolist(this.props.id);
-        //     });
-    }
+        this.props.deleteTodolist(this.props.id)}
 
     deleteTask = (taskId) => {
-        api.deleteTask(taskId)
-            .then(res => {
-                // раз попали в then, значит
-                this.props.deleteTask(taskId, this.props.id);
-            });
+       this.props.deleteTask(taskId, this.props.id)
     }
 
     updateTitle = (title) => {
-        api.updateTodolistTitle(title, this.props.id)
-            .then(res => {
-                this.props.updateTodolistTitle(title, this.props.id);
-            });
+       this.props.updateTodolistTitle(title, this.props.id)
     }
 
     render = () => {
@@ -129,35 +106,29 @@ class TodoList extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // addTask(newTask, todolistId) {
-        //     dispatch(addTaskAC(newTask, todolistId));
-        // },
-        // setTasks(tasks, todolistId) {
-        //     dispatch(setTasksAC(tasks, todolistId));
-        // },
         getTasks(tasks, todolistId) {
             dispatch(getTasksTC(tasks, todolistId));
         },
-        updateTask(taskId, obj, todolistId) {
-            const action = updateTaskAC(taskId, obj, todolistId);
-            dispatch(action);
+        createTask: (newText, todolistId) => {
+            const thunk = createTaskTC(newText, todolistId);
+            dispatch(thunk)
         },
         deleteTodolist: (todolistId) => {
             const thunk = deleteTodolistTC(todolistId);
             dispatch(thunk)
         },
         deleteTask: (taskId, todolistId) => {
-            const action = deleteTaskAC(todolistId, taskId);
+            const action = deleteTaskTC(taskId, todolistId);
             dispatch(action)
+        },
+        updateTask(taskId, obj, todolistId) {
+            const thunk = updateTaskTC(taskId, obj, todolistId);
+            dispatch(thunk);
         },
         updateTodolistTitle: (title, todolistId) => {
-            const action = updateTodolistTitleAC(todolistId, title);
+            const action = updateTodolistTitleTC(title, todolistId);
             dispatch(action)
         },
-        createTask: (newText, todolistId) => {
-            const thunk = createTaskTC(newText, todolistId);
-            dispatch(thunk)
-        }
     }
 }
 

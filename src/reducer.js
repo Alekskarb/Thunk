@@ -114,7 +114,7 @@ const reducer = (state = initialState, action) => {
 }
 
 export const updateTaskAC = (taskId, obj, todolistId) => {
-    return { type: UPDATE_TASK, taskId, obj, todolistId };
+    return {type: UPDATE_TASK, taskId, obj, todolistId};
 }
 export const deleteTodolistAC = (todolistId) => {
     return {
@@ -122,33 +122,34 @@ export const deleteTodolistAC = (todolistId) => {
         todolistId: todolistId
     };
 }
-export const deleteTaskAC = (todolistId, taskId) => {
+export const deleteTaskAC = (taskId, todolistId) => {
     return {
         type: DELETE_TASK,
         todolistId,
         taskId
     };
 }
-export const updateTodolistTitleAC = (todolistId, title) => {
+export const updateTodolistTitleAC = (title, todolistId) => {
     return {
         type: UPDATE_TODOLIST_TITLE,
         todolistId,
         title
     };
 }
-export const addTaskAC = (newTask, todolistId) => {
-    return { type: ADD_TASK, newTask, todolistId };
-}
-export const setTasksAC = (tasks, todolistId) => {
-    return { type: SET_TASKS, tasks, todolistId };
-}
 export const addTodolistAC = (newTodolist) => {
     return {
         type: ADD_TODOLIST,
         newTodolist: newTodolist
     }
+};
+
+const addTaskAC = (newTask, todolistId) => {
+    return {type: ADD_TASK, newTask, todolistId};
 }
-export const setTodolistsAC = (todolists) => {
+const setTasksAC = (tasks, todolistId) => {
+    return {type: SET_TASKS, tasks, todolistId};
+}
+const setTodolistsAC = (todolists) => {
     return {
         type: SET_TODOLISTS,
         todolists: todolists
@@ -158,30 +159,56 @@ export const setTodolistsAC = (todolists) => {
 export const getTodolistsTC = () => (dispatch, getState) => {
     api.getTodolists().then(res => {
         dispatch(setTodolistsAC(res.data))
-        }
-    )
-    }
-    export const getTasksTC = (todolistId) => (dispatch, getState) => {
-        api.getTasks(todolistId)
-            .then(res => {
-                let allTasks = res.data.items;                           // items - это таски сервака
-                dispatch(setTasksAC(allTasks, todolistId));
-            });
-    };
-
+    })
+}
+export const getTasksTC = (todolistId) => (dispatch, getState) => {
+    api.getTasks(todolistId)
+        .then(res => {
+            let allTasks = res.data.items;  // items - это таски сервака
+            dispatch(setTasksAC(allTasks, todolistId));
+        });
+};
 export const createTaskTC = (newText, todolistId) => (dispatch, getState) => {
     api.createTask(newText, todolistId).then(res => {
         let newTask = res.data.data.item;
         dispatch(addTaskAC(newTask, todolistId));
     });
-    };
-
+};
 export const deleteTodolistTC = (todolistId) => (dispatch, getState) => {
     api.deleteTodolist(todolistId)
         .then(res => {
             dispatch(deleteTodolistAC(todolistId));
         })
 }
+export const addTodolistTC = (title) => (dispatch, getState) => {
+    api.createTodolist(title).then(res => {
+        let todolist = res.data.data.item;
+        dispatch(addTodolistAC(todolist))
+    })
+}
+export const deleteTaskTC = (taskId, todolistId) => (dispatch, getState) => {
+    api.deleteTask(taskId)
+        .then(res => {
+            dispatch(deleteTaskAC(taskId, todolistId));
+        });
+}
+export const updateTaskTC = (taskId, obj, todolistId) => (dispatch, getState) => {
+    getState().todolists.find(td=> td.id === todolistId)
+    .tasks.forEach(t => {
+        if (t.id === taskId) {
+            api.updateTask({...t, ...obj})
+                .then(res => {
+                    dispatch(updateTaskAC(taskId, obj, todolistId));
+                });
+        }
+    })
+}
 
+export const updateTodolistTitleTC = (title, todolistId)=> (dispatch, getState)=> {
+    api.updateTodolistTitle(title, todolistId)
+        .then(res => {
+            dispatch(updateTodolistTitleAC(title,todolistId));
+        });
+}
 
 export default reducer;
