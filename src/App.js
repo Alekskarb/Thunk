@@ -3,8 +3,7 @@ import './App.css';
 import TodoList from "./TodoList";
 import AddNewItemForm from "./AddNewItemForm";
 import {connect} from "react-redux";
-import {ADD_TODOLIST, addTodolistAC, addTodolistTC, getTodolistsTC, setTodolistsAC} from "./reducer";
-import {api} from "./api";
+import {addTodolistTC, getTodolistsTC, setTodolistsAC} from "./reducer";
 
 class App extends React.Component {
 
@@ -15,18 +14,11 @@ class App extends React.Component {
     }
 
     addTodoList = (title) => {
-                this.props.addTodolist(title);
+        this.props.addTodolist(title);
     };
 
     componentDidMount() {
         this.restoreState();
-    }
-
-    saveState = () => {
-        // переводим объект в строку
-        let stateAsString = JSON.stringify(this.state);
-        // сохраняем нашу строку в localStorage под ключом "our-state"
-        localStorage.setItem("todolists-state", stateAsString);
     };
 
     restoreState = () => {
@@ -54,7 +46,7 @@ const mapStateToProps = (state) => {
     return {
         todolists: state.todolists
     }
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
