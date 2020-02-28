@@ -37,6 +37,9 @@ class TodoList extends React.Component {
     };
 
     changeTask = (taskId, obj) => {
+
+
+
         this.props.updateTask(taskId, obj)
     };
 

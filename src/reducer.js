@@ -1,4 +1,5 @@
 import {api} from "./api";
+import {default} from "react-redux/lib/utils/Subscription";
 
 export const ADD_TODOLIST = "App/Reducer/ADD-TODOLIST";
 export const DELETE_TODOLIST = "TodoList/Reducer/DELETE-TODOLIST";
@@ -82,7 +83,7 @@ const reducer = (state = initialState, action) => {
                         return {
                             ...tl,
                             tasks: tl.tasks.map(t => {
-                                if (t.id != action.taskId) {
+                                if (t.id !== action.taskId) {
                                     return t;
                                 } else {
                                     return {...t, ...action.obj};
@@ -93,11 +94,11 @@ const reducer = (state = initialState, action) => {
                         return tl
                     }
                 })
-            }
+            };
+            default: return state;
     }
-    console.log("reducer: ", action);
-    return state;
 };
+
 // Action creators
 const updateTaskAC = (taskId, obj, todolistId) => ({type: UPDATE_TASK, taskId, obj, todolistId});
 const deleteTodolistAC = (todolistId) => ({type: DELETE_TODOLIST, todolistId: todolistId});
@@ -107,6 +108,7 @@ const addTodolistAC = (newTodolist) => ({type: ADD_TODOLIST, newTodolist: newTod
 const addTaskAC = (newTask, todolistId) => ({type: ADD_TASK, newTask, todolistId});
 const setTasksAC = (tasks, todolistId) => ({type: SET_TASKS, tasks, todolistId});
 const setTodolistsAC = (todolists) => ({type: SET_TODOLISTS, todolists: todolists});
+
 // Thunk creators
 export const getTodolistsTC = () => (dispatch, getState) => {
 //to API, dispatch action
@@ -162,6 +164,6 @@ export const updateTodolistTitleTC = (title, todolistId) => (dispatch, getState)
         .then(res => {
             dispatch(updateTodolistTitleAC(title, todolistId));
         });
-}
+};
 
 export default reducer;
